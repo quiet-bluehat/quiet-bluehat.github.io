@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>胡安静 · 个人主页</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Noto+Serif+SC:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* ── Warm Creative Palette ── */
+      --cream:     #FAF8F5;
+      --cream2:    #F4F1EB;
+      --cream3:    #EDE9E0;
+
+      --coral:     #FF6B4A;
+      --coral-lt:  #FF8A6E;
+      --coral-dk:  #E5502E;
+      --coral-bg:  rgba(255,107,74,0.08);
+      --coral-bdr: rgba(255,107,74,0.22);
+
+      --mint:      #2EC4B6;
+      --mint-lt:   #4DD8CB;
+      --mint-bg:   rgba(46,196,182,0.08);
+      --mint-bdr:  rgba(46,196,182,0.2);
+
+      --gold:      #F5A623;
+      --gold-bg:   rgba(245,166,35,0.1);
+
+      --ink:       #1A1A1A;
+      --ink2:      #3D3D3D;
+      --ink3:      #6B6B6B;
+      --ink4:      #9A9A9A;
+
+      --white:     #FFFFFF;
+
+      --card-sh:   0 2px 20px rgba(26,26,26,0.06), 0 1px 4px rgba(26,26,26,0.04);
+      --card-sh2:  0 8px 40px rgba(26,26,26,0.10), 0 2px 8px rgba(26,26,26,0.06);
+
+      --r: 18px;
+      --r-sm: 12px;
+      --ease: cubic-bezier(0.34,1.4,0.64,1);
+    }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box }
+    html { scroll-behavior:smooth }
+    body {
+      font-family: 'Inter', 'Noto Serif SC', -apple-system, sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      line-height: 1.7;
+      font-size: 15px;
+      overflow-x: hidden;
+    }
+
+    /* ── SCROLL PROGRESS ── */
+    #prog {
+      position: fixed; top:0; left:0; height:3px; width:0%;
+      background: linear-gradient(90deg, var(--coral), var(--gold), var(--mint));
+      z-index: 300; transition: width .08s linear;
+    }
+
+    /* ── HAND-DRAWN DECORATIONS ── */
+    .squiggle {
+      position: absolute; pointer-events: none;
+      fill: none; overflow: visible;
+    }
+    .deco-dot {
+      position: absolute; pointer-events: none;
+      border-radius: 50%; background: var(--coral);
+      opacity: 0.18;
+    }
+    .deco-ring {
+      position: absolute; pointer-events: none;
+      border-radius: 50%; border: 2px solid var(--coral);
+      opacity: 0.15;
+    }
+    .deco-cross {
+      position: absolute; pointer-events: none; width:16px; height:16px;
+    }
+    .deco-cross::before, .deco-cross::after {
+      content:''; position:absolute; background:var(--coral); border-radius:2px; opacity:0.3;
+    }
+    .deco-cross::before { width:2px; height:100%; left:50%; transform:translateX(-50%) rotate(12deg) }
+    .deco-cross::after  { width:100%; height:2px; top:50%; transform:translateY(-50%) rotate(12deg) }
+
+    @keyframes floatY { 0%,100%{transform:translateY(0) rotate(0deg)} 50%{transform:translateY(-8px) rotate(4deg)} }
+    @keyframes floatX { 0%,100%{transform:rotate(-3deg)} 50%{transform:rotate(5deg) translateY(-5px)} }
+    @keyframes spinSlow { to { transform: rotate(360deg) } }
+    @keyframes bobble { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top:0; left:0; right:0; z-index:200;
+      height: 60px; padding: 0 2.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(250,248,245,0.88);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(26,26,26,0.06);
+    }
+    .nav-brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem; font-weight: 700; color: var(--ink);
+      text-decoration: none; letter-spacing: .01em;
+      transition: color .2s;
+    }
+    .nav-brand:hover { color: var(--coral) }
+    .nav-brand span { color: var(--coral) }
+    .nav-links { list-style: none; display: flex; gap: 2rem }
+    .nav-links a {
+      text-decoration: none; color: var(--ink3); font-size: .8rem;
+      font-weight: 500; letter-spacing: .02em;
+      position: relative; padding-bottom: 2px; transition: color .2s;
+    }
+    .nav-links a::after {
+      content: ''; position:absolute; bottom:0; left:0;
+      width:0; height:2px; border-radius:1px;
+      background: var(--coral); transition: width .25s var(--ease);
+    }
+    .nav-links a:hover { color: var(--ink) }
+    .nav-links a:hover::after { width:100% }
+
+    /* ── SHARED LAYOUT ── */
+    section { position: relative; z-index: 1 }
+    .container { max-width: 960px; margin:0 auto; padding: 0 2.5rem }
+
+    /* section headers */
+    .sec-label {
+      display: inline-flex; align-items: center; gap: .5rem;
+      font-size: .68rem; font-weight: 700; letter-spacing: .18em;
+      text-transform: uppercase; color: var(--coral); margin-bottom: .6rem;
+    }
+    .sec-label::before {
+      content: ''; width: 20px; height: 2px; border-radius:1px; background: var(--coral);
+    }
+    .sec-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+      font-weight: 700; line-height: 1.15; color: var(--ink); margin-bottom: 2.5rem;
+    }
+    .sec-title em { font-style: italic; color: var(--coral) }
+
+    /* cards */
+    .card {
+      background: var(--white); border-radius: var(--r);
+      box-shadow: var(--card-sh);
+      border: 1px solid rgba(26,26,26,0.05);
+      transition: transform .35s var(--ease), box-shadow .3s ease;
+    }
+    .card:hover { box-shadow: var(--card-sh2) }
+
+    /* chips + tags */
+    .chip {
+      display:inline-block; font-size:.68rem; font-weight:600; padding:.2rem .6rem;
+      border-radius:100px; letter-spacing:.03em;
+    }
+    .chip-coral { background: var(--coral-bg); color: var(--coral); border:1px solid var(--coral-bdr) }
+    .chip-mint  { background: var(--mint-bg);  color: var(--mint);  border:1px solid var(--mint-bdr) }
+    .chip-gold  { background: var(--gold-bg);  color: var(--gold);  border:1px solid rgba(245,166,35,.25) }
+    .chip-ink   { background: rgba(26,26,26,.06); color: var(--ink2); border:1px solid rgba(26,26,26,.1) }
+
+    .tag {
+      display:inline-block; font-size:.68rem; font-weight:600; padding:.2rem .6rem;
+      border-radius:100px; background: rgba(26,26,26,.05); color: var(--ink3);
+      border: 1px solid rgba(26,26,26,.08);
+      transition: background .2s, color .2s, transform .2s var(--ease);
+      cursor:default;
+    }
+    .tag:hover { background: var(--coral); color:#fff; border-color:var(--coral); transform:scale(1.08) translateY(-2px) }
+
+    /* scroll reveal */
+    .ap { opacity:0; transform:translateY(20px); transition:opacity .55s var(--ease), transform .55s var(--ease) }
+    .ap.in { opacity:1; transform:translateY(0) }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh; padding-top: 60px;
+      display: flex; align-items: center;
+      background: var(--cream);
+      overflow: hidden;
+    }
+    .hero-inner {
+      display: grid; grid-template-columns: 1fr 1fr;
+      align-items: center; gap: 4rem;
+      padding: 80px 0 80px;
+    }
+
+    /* Hero text */
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: .5rem;
+      font-size: .72rem; font-weight: 700; letter-spacing: .16em;
+      text-transform: uppercase; color: var(--coral);
+      margin-bottom: 1.2rem;
+      opacity:0; animation: fadeUp .6s var(--ease) .1s forwards;
+    }
+    .hero-eyebrow .pulse-dot {
+      width:7px; height:7px; border-radius:50%; background: var(--coral);
+      animation: pulseDot 2.2s ease-in-out infinite;
+    }
+    @keyframes pulseDot {
+      0%,100%{box-shadow:0 0 0 0 rgba(255,107,74,.4)}
+      50%{box-shadow:0 0 0 6px rgba(255,107,74,0)}
+    }
+
+    .hero-name-wrap {
+      margin-bottom: 1rem;
+      opacity:0; animation: fadeUp .7s var(--ease) .2s forwards;
+    }
+    .hero-name-en {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.8rem, 5.5vw, 4.2rem);
+      font-weight: 900; line-height: 1.0; color: var(--ink);
+      letter-spacing: -.01em;
+    }
+    .hero-name-en span { color: var(--coral); font-style: italic }
+    .hero-name-zh {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 1.1rem; font-weight: 700; color: var(--ink3);
+      letter-spacing: .12em; margin-top: .3rem;
+      display: flex; align-items: center; gap: .5rem;
+    }
+    .hero-name-zh::before {
+      content:''; width:24px; height:1.5px; background:var(--coral); border-radius:1px;
+    }
+
+    .hero-roles {
+      display: flex; flex-wrap: wrap; gap: .5rem;
+      margin-bottom: 1.4rem;
+      opacity:0; animation: fadeUp .6s var(--ease) .3s forwards;
+    }
+
+    .hero-bio {
+      font-size: .95rem; color: var(--ink2); line-height:2; margin-bottom: 1.8rem;
+      max-width: 440px;
+      opacity:0; animation: fadeUp .6s var(--ease) .4s forwards;
+    }
+    .hero-bio strong { color: var(--coral); font-weight:600 }
+
+    .hero-motto {
+      font-family: 'Noto Serif SC', serif;
+      font-size: .9rem; color: var(--ink3); font-style:italic;
+      border-left: 3px solid var(--coral); padding-left: .875rem;
+      margin-bottom: 2rem; line-height:1.8;
+      opacity:0; animation: fadeUp .6s var(--ease) .5s forwards;
+    }
+
+    .hero-ctas {
+      display: flex; gap: .75rem; flex-wrap:wrap;
+      opacity:0; animation: fadeUp .6s var(--ease) .6s forwards;
+    }
+
+    /* Hero right — big decorative avatar area */
+    .hero-right {
+      position: relative;
+      display: flex; align-items: center; justify-content: center;
+      opacity:0; animation: fadeIn .9s var(--ease) .3s forwards;
+    }
+    @keyframes fadeIn { to{opacity:1} }
+    @keyframes fadeUp { to{opacity:1;transform:translateY(0)} }
+    /* reset ap transform for elements with custom animation */
+    .hero-eyebrow, .hero-name-wrap, .hero-roles, .hero-bio, .hero-motto, .hero-ctas {
+      transform: translateY(20px);
+    }
+
+    .hero-avatar-card {
+      width: 280px; height: 340px;
+      background: linear-gradient(145deg, var(--coral-bg), rgba(245,166,35,.06), var(--mint-bg));
+      border-radius: 28px 80px 28px 60px;
+      border: 2px solid var(--coral-bdr);
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: visible;
+      box-shadow: var(--card-sh), 6px 6px 0 var(--coral-bdr);
+      animation: bobble 6s ease-in-out 1s infinite;
+    }
+    .hero-avatar-initials {
+      font-family: 'Playfair Display', serif;
+      font-size: 5rem; font-weight: 900; color: var(--coral);
+      opacity: .25; user-select:none;
+    }
+    .hero-avatar-tag {
+      position: absolute; bottom: -16px; left: 50%; transform: translateX(-50%);
+      background: var(--white); border-radius: 100px;
+      padding: .5rem 1.2rem;
+      box-shadow: var(--card-sh);
+      font-size: .75rem; font-weight: 600; color: var(--ink2);
+      white-space: nowrap; border: 1px solid rgba(26,26,26,.06);
+    }
+    .hero-avatar-tag strong { color: var(--coral) }
+
+    /* scattered hero deco */
+    .hero-deco-1 {
+      position:absolute; top: 8%; right:-8%;
+      width: 120px; height: 120px;
+      border: 2px dashed rgba(255,107,74,.2); border-radius:50%;
+      animation: spinSlow 20s linear infinite;
+    }
+    .hero-deco-2 {
+      position:absolute; bottom:10%; left:-12%;
+      width:80px; height:80px;
+      background: var(--gold-bg); border-radius:50%;
+      animation: floatY 5s ease-in-out infinite;
+    }
+    .hero-deco-3 {
+      position:absolute; top:30%; left:-16%;
+      font-size:2rem; animation: floatX 4s ease-in-out infinite;
+      opacity:.5;
+    }
+
+    /* ── MARQUEE ── */
+    .marquee-wrap {
+      border-top: 1.5px solid var(--cream3); border-bottom: 1.5px solid var(--cream3);
+      padding: .8rem 0; overflow:hidden; background: var(--cream2);
+      position:relative; z-index:1;
+    }
+    .marquee-inner { display:flex; width:max-content; animation: marquee 28s linear infinite }
+    .marquee-inner:hover { animation-play-state:paused }
+    .mi {
+      white-space:nowrap; font-size:.75rem; font-weight:500;
+      color: var(--ink3); padding:0 1.25rem; letter-spacing:.05em;
+    }
+    .mi-sep { color: var(--coral); font-weight:700 }
+    @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+    /* ── ABOUT ── */
+    #about { padding: 100px 0 80px }
+    .about-grid { display:grid; grid-template-columns:1fr 370px; gap:3.5rem; align-items:start }
+    .about-text p {
+      font-size:.97rem; color:var(--ink2); line-height:2.1; margin-bottom:1.2rem;
+    }
+    .about-text p strong { color:var(--ink); font-weight:700 }
+    .about-text p .hl { color:var(--coral); font-weight:600 }
+
+    .about-quote {
+      margin: 1.8rem 0;
+      padding: 1.2rem 1.5rem;
+      background: var(--coral-bg);
+      border-radius: var(--r-sm);
+      border-left: 3px solid var(--coral);
+      font-family: 'Noto Serif SC', serif;
+      font-size: .92rem; line-height:1.85; color:var(--ink2);
+      font-style: italic;
+    }
+
+    .edu-stack { display:flex; flex-direction:column; gap:1rem }
+    .edu-card {
+      padding: 1.5rem 1.6rem;
+      border-radius: var(--r);
+      border-top: 4px solid var(--coral);
+    }
+    .edu-card.mint-border { border-top-color: var(--mint) }
+    .edu-school { font-weight:700; font-size:.95rem; margin-bottom:.15rem; color:var(--ink) }
+    .edu-deg { font-size:.78rem; color:var(--coral); font-weight:600; margin-bottom:.4rem; letter-spacing:.04em }
+    .edu-card.mint-border .edu-deg { color: var(--mint) }
+    .edu-meta { font-size:.75rem; color:var(--ink4); margin-bottom:.55rem }
+    .edu-body { font-size:.82rem; color:var(--ink3); line-height:1.8 }
+    .edu-chips { margin-top:.75rem; display:flex; flex-wrap:wrap; gap:.3rem }
+
+    /* ── CAPABILITIES ── */
+    #capabilities { padding: 80px 0; background: var(--ink); position:relative; overflow:hidden }
+    /* dark section special overrides */
+    #capabilities .sec-label { color: rgba(255,107,74,.9) }
+    #capabilities .sec-label::before { background: rgba(255,107,74,.9) }
+    #capabilities .sec-title { color: var(--cream) }
+    #capabilities .sec-title em { color: var(--coral) }
+
+    .cap-intro { font-size:.92rem; color:rgba(255,248,245,.5); margin-top:-.5rem; margin-bottom:2.5rem }
+
+    .cap-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.25rem }
+    .cap-card {
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: var(--r); padding: 2rem 1.75rem;
+      transition: transform .35s var(--ease), background .25s;
+    }
+    .cap-card:hover { transform:translateY(-6px) rotate(.3deg); background:rgba(255,255,255,.07) }
+    .cap-card:nth-child(2):hover { transform:translateY(-6px) rotate(-.3deg) }
+    .cap-num {
+      font-size:.65rem; font-weight:700; letter-spacing:.18em;
+      color: rgba(255,107,74,.6); margin-bottom:.75rem;
+    }
+    .cap-title {
+      font-family:'Playfair Display',serif; font-size:1.1rem; font-weight:700;
+      color:var(--cream); margin-bottom:1rem; line-height:1.3;
+    }
+    .cap-bar { width:28px; height:2px; border-radius:1px; background:var(--coral); margin-bottom:1.2rem; opacity:.7 }
+    .cap-list { list-style:none; display:flex; flex-direction:column; gap:.5rem }
+    .cap-list li {
+      font-size:.83rem; color:rgba(255,248,245,.55);
+      display:flex; align-items:center; gap:.55rem;
+      transition: color .2s;
+    }
+    .cap-list li::before {
+      content:''; width:5px; height:5px; border-radius:50%;
+      background: var(--coral); flex-shrink:0; opacity:.6;
+      transition: opacity .2s, transform .2s;
+    }
+    .cap-card:hover .cap-list li { color:rgba(255,248,245,.8) }
+    .cap-card:hover .cap-list li::before { opacity:1; transform:scale(1.3) }
+
+    /* deco inside dark section */
+    .cap-deco-ring {
+      position:absolute; border-radius:50%;
+      border:1px solid rgba(255,107,74,.08); pointer-events:none;
+    }
+
+    /* ── EXPERIENCE ── */
+    #experience { padding: 100px 0 80px }
+    .tl-wrap { position:relative; padding-left:2.5rem }
+    .tl-track {
+      position:absolute; left:6px; top:10px;
+      width:1.5px; height:0;
+      background: linear-gradient(180deg, var(--coral), rgba(255,107,74,.15));
+      transition: height 1.4s var(--ease);
+    }
+    .tl-wrap.drawn .tl-track { height:calc(100% - 20px) }
+    .tl-item { position:relative; padding-bottom:1.75rem }
+    .tl-item:last-child { padding-bottom:0 }
+    .tl-dot {
+      position:absolute; left:-2.5rem; top:8px;
+      width:13px; height:13px; border-radius:50%;
+      background:var(--white); border:2.5px solid var(--coral);
+      box-shadow:0 0 0 4px rgba(255,107,74,.12);
+      transition:box-shadow .3s, background .3s;
+    }
+    .tl-item:hover .tl-dot { background:var(--coral); box-shadow:0 0 0 8px rgba(255,107,74,.12) }
+    .tl-item.dim .tl-dot { border-color:var(--ink4); box-shadow:none }
+    .tl-item.featured .tl-dot::after {
+      content:''; position:absolute; inset:-5px; border-radius:50%;
+      border:1.5px solid rgba(255,107,74,.3);
+      animation:tlPulse 2.5s ease-in-out infinite;
+    }
+    @keyframes tlPulse{0%,100%{transform:scale(1);opacity:.7}50%{transform:scale(1.9);opacity:0}}
+
+    .tl-card { padding:1.5rem 1.75rem }
+    .tl-item.featured .tl-card { border-left:3px solid var(--coral) }
+    .tl-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:.875rem; gap:1rem }
+    .tl-company { font-weight:700; font-size:.95rem; margin-bottom:.15rem; color:var(--ink) }
+    .tl-role { font-size:.78rem; color:var(--coral); font-weight:600 }
+    .tl-period {
+      font-size:.72rem; color:var(--ink4); white-space:nowrap;
+      background:var(--cream2); padding:.25rem .65rem; border-radius:100px;
+      border:1px solid var(--cream3); flex-shrink:0; margin-top:2px;
+    }
+    .tl-sub {
+      font-size:.68rem; font-weight:700; letter-spacing:.1em;
+      text-transform:uppercase; color:var(--coral); margin:.85rem 0 .4rem; opacity:.8;
+    }
+    .tl-sub:first-of-type { margin-top:.2rem }
+    .tl-body { font-size:.855rem; color:var(--ink3); line-height:1.9 }
+    .tl-body ul { list-style:none }
+    .tl-body li { padding-left:1.1rem; position:relative; margin-bottom:.3rem }
+    .tl-body li::before { content:'·'; position:absolute; left:.2rem; color:var(--coral); font-weight:900; font-size:1rem }
+
+    /* ── PROJECTS ── */
+    #projects { padding:100px 0 80px; background:var(--cream2) }
+    .projects-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.25rem }
+    .pj {
+      padding:1.75rem; display:flex; flex-direction:column;
+      border-top:4px solid var(--coral);
+      transition: transform .35s var(--ease), box-shadow .3s;
+    }
+    .pj:nth-child(2) { border-top-color:var(--mint) }
+    .pj:nth-child(3) { border-top-color:var(--gold) }
+    .pj:nth-child(4) { border-top-color:var(--ink2) }
+    .projects-grid .pj:nth-child(odd):hover  { transform:translateY(-7px) rotate(.4deg) }
+    .projects-grid .pj:nth-child(even):hover { transform:translateY(-7px) rotate(-.4deg) }
+    .pj-icon {
+      width:44px; height:44px; border-radius:var(--r-sm);
+      display:flex; align-items:center; justify-content:center;
+      font-size:1.35rem; margin-bottom:1rem; flex-shrink:0;
+      background:var(--cream2); border:1.5px solid var(--cream3);
+    }
+    .pj:nth-child(1) .pj-icon { background:var(--coral-bg); border-color:var(--coral-bdr) }
+    .pj:nth-child(2) .pj-icon { background:var(--mint-bg);  border-color:var(--mint-bdr) }
+    .pj:nth-child(3) .pj-icon { background:var(--gold-bg);  border-color:rgba(245,166,35,.25) }
+    .pj-name { font-weight:700; font-size:.98rem; margin-bottom:.15rem; color:var(--ink) }
+    .pj-sub  { font-size:.72rem; color:var(--ink4); font-weight:500; margin-bottom:.75rem }
+    .pj-desc { font-size:.855rem; color:var(--ink3); line-height:1.9; flex:1 }
+    .pj-tags { display:flex; flex-wrap:wrap; gap:.3rem; margin-top:1rem }
+
+    /* ── RESEARCH ── */
+    #research { padding:100px 0 80px }
+    .papers { display:flex; flex-direction:column; gap:.875rem }
+    .paper-row {
+      display:grid; grid-template-columns:56px 1fr;
+      gap:1rem; padding:1.25rem 1.5rem; align-items:start;
+      transition:transform .3s var(--ease);
+    }
+    .paper-row:hover { transform:translateX(4px) }
+    .p-num {
+      font-family:'Playfair Display',serif;
+      font-size:1.8rem; font-weight:900;
+      color:rgba(26,26,26,.08); line-height:1;
+      transition:color .3s;
+    }
+    .paper-row:hover .p-num { color:rgba(255,107,74,.25) }
+    .p-title { font-size:.88rem; color:var(--ink2); font-weight:500; line-height:1.75 }
+    .p-status { font-size:.7rem; color:var(--ink4); margin-top:.3rem }
+    .p-status.pub      { color:#22c55e; font-weight:600 }
+    .p-status.progress { color:var(--gold); font-weight:600 }
+
+    /* ── CONTACT ── */
+    #contact {
+      padding:100px 0 80px;
+      background: var(--ink); position:relative; overflow:hidden;
+    }
+    #contact .sec-label { color: rgba(255,107,74,.9) }
+    #contact .sec-label::before { background: rgba(255,107,74,.9) }
+    #contact .sec-title { color:var(--cream) }
+
+    .contact-grid { display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:start }
+
+    .contact-left-big {
+      font-family:'Playfair Display',serif;
+      font-size:clamp(1.8rem, 3.5vw, 2.5rem); font-weight:700;
+      color:var(--cream); line-height:1.25; margin-bottom:1.2rem;
+    }
+    .contact-left-big em { color:var(--coral); font-style:italic }
+    .contact-sub { font-size:.92rem; color:rgba(255,248,245,.45); line-height:1.9; margin-bottom:2rem }
+    .contact-motto {
+      font-family:'Noto Serif SC',serif;
+      font-size:.85rem; color:rgba(255,248,245,.3);
+      font-style:italic; border-top:1px solid rgba(255,255,255,.06);
+      padding-top:1.2rem; line-height:1.8;
+    }
+
+    .contact-links { display:flex; flex-direction:column; gap:.875rem }
+    .c-link {
+      display:flex; align-items:center; gap:.875rem;
+      padding:1.1rem 1.4rem; text-decoration:none;
+      background:rgba(255,255,255,.04);
+      border-radius:var(--r); border:1px solid rgba(255,255,255,.07);
+      transition:transform .3s var(--ease), background .25s, border-color .25s;
+    }
+    .c-link:hover {
+      background:rgba(255,107,74,.1); border-color:rgba(255,107,74,.25);
+      transform:translateX(6px);
+    }
+    .c-icon {
+      width:40px; height:40px; border-radius:var(--r-sm);
+      background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1);
+      display:flex; align-items:center; justify-content:center;
+      font-size:1rem; flex-shrink:0;
+      transition:background .25s, transform .3s var(--ease);
+    }
+    .c-link:hover .c-icon { background:rgba(255,107,74,.2); transform:rotate(-8deg) scale(1.1) }
+    .c-name { font-size:.875rem; font-weight:600; color:rgba(255,248,245,.8) }
+    .c-meta { font-size:.72rem; color:rgba(255,248,245,.3); margin-top:.05rem }
+
+    /* contact deco */
+    .contact-deco-dot {
+      position:absolute; border-radius:50%;
+      background:var(--coral); pointer-events:none;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      position:relative; z-index:1; text-align:center;
+      padding:1.5rem; font-size:.74rem; color:rgba(255,248,245,.25);
+      background:var(--ink); border-top:1px solid rgba(255,255,255,.05);
+    }
+    footer a { color:rgba(255,107,74,.6); text-decoration:none }
+    footer .heart { color:var(--coral) }
+
+    /* ── BUTTONS ── */
+    .btn {
+      display:inline-flex; align-items:center; gap:.4rem;
+      padding:.65rem 1.4rem; border-radius:100px;
+      font-size:.82rem; font-weight:600; text-decoration:none;
+      transition:transform .3s var(--ease), box-shadow .25s ease, background .2s;
+      border:none; cursor:pointer; letter-spacing:.02em;
+    }
+    .btn:active { transform:scale(.96)!important }
+    .btn-fill {
+      background:var(--coral); color:#fff;
+      box-shadow:0 4px 20px rgba(255,107,74,.3), 3px 3px 0 var(--coral-dk);
+    }
+    .btn-fill:hover { background:var(--coral-lt); transform:translateY(-3px); box-shadow:0 8px 28px rgba(255,107,74,.4), 3px 3px 0 var(--coral-dk) }
+    .btn-outline {
+      background:transparent; color:var(--ink);
+      border:1.5px solid rgba(26,26,26,.2);
+    }
+    .btn-outline:hover { background:var(--ink); color:#fff; transform:translateY(-3px) }
+    .btn-outline-white {
+      background:transparent; color:rgba(255,248,245,.7);
+      border:1.5px solid rgba(255,255,255,.15);
+    }
+    .btn-outline-white:hover { background:rgba(255,255,255,.1); color:var(--cream); transform:translateY(-3px) }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width:760px) {
+      .hero-inner, .about-grid, .contact-grid { grid-template-columns:1fr }
+      .hero-right { display:none }
+      .projects-grid, .cap-grid { grid-template-columns:1fr }
+      .nav-links { display:none }
+      section, #about, #experience, #projects, #research, #contact { padding:72px 0 60px }
+      .sec-title { font-size:1.6rem }
+      .tl-wrap { padding-left:1.75rem }
+    }
+  </style>
+</head>
+<body>
+
+<div id="prog"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-brand">胡<span>安</span>静</a>
+  <ul class="nav-links">
+    <li><a href="#about">关于</a></li>
+    <li><a href="#capabilities">能力</a></li>
+    <li><a href="#experience">实习</a></li>
+    <li><a href="#projects">项目</a></li>
+    <li><a href="#research">研究</a></li>
+    <li><a href="#contact">联系</a></li>
+  </ul>
+</nav>
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<section id="hero">
+  <div class="container">
+    <div class="hero-inner">
+
+      <!-- Left: text -->
+      <div>
+        <div class="hero-eyebrow">
+          <span class="pulse-dot"></span>
+          北京大学 · 社会工作 · AI
+        </div>
+
+        <div class="hero-name-wrap">
+          <div class="hero-name-en">Hu<span>&nbsp;An</span>jing</div>
+          <div class="hero-name-zh">胡安静</div>
+        </div>
+
+        <div class="hero-roles">
+          <span class="chip chip-coral">AI 产品运营</span>
+          <span class="chip chip-mint">独立开发者</span>
+          <span class="chip chip-gold">量化研究者</span>
+          <span class="chip chip-ink">北大在读硕士</span>
+        </div>
+
+        <p class="hero-bio">
+          用<strong>社科视角</strong>理解人与社会，用 AI 工具构建有意义的产品。<br>
+          关注技术与人文的交汇——AI 赋能社区治理、弱势群体支持、用户增长。
+        </p>
+
+        <div class="hero-motto">
+          社科视角 × AI 工具<br>我想做对人真正有意义的东西
+        </div>
+
+        <div class="hero-ctas">
+          <a href="https://github.com/QuietAnjing" class="btn btn-fill" target="_blank" rel="noopener">⌨&nbsp; GitHub</a>
+          <a href="mailto:17354729343@163.com" class="btn btn-outline">✉&nbsp; 联系我</a>
+          <a href="https://twitter.com/MarsWaveAI" class="btn btn-outline" target="_blank" rel="noopener">𝕏&nbsp; Twitter</a>
+        </div>
+      </div>
+
+      <!-- Right: decorative visual -->
+      <div class="hero-right">
+        <!-- decorative elements -->
+        <div class="hero-deco-1"></div>
+        <div class="hero-deco-2"></div>
+        <div class="hero-deco-3">✦</div>
+
+        <div style="position:relative">
+          <div class="hero-avatar-card">
+            <span class="hero-avatar-initials">胡</span>
+            <!-- scattered dots -->
+            <div class="deco-dot" style="width:10px;height:10px;top:-18px;right:24px;animation:floatY 4s ease-in-out infinite"></div>
+            <div class="deco-dot" style="width:16px;height:16px;bottom:-10px;right:-12px;background:var(--mint);animation:floatY 5.5s ease-in-out .5s infinite"></div>
+            <div class="deco-dot" style="width:8px;height:8px;top:30px;left:-14px;background:var(--gold);animation:floatY 4.5s ease-in-out 1s infinite"></div>
+          </div>
+          <div class="hero-avatar-tag">1 Person + AI = <strong>1 Team</strong></div>
+        </div>
+
+        <!-- right-side scattered deco -->
+        <div style="position:absolute;top:15%;right:-5%;font-size:1.3rem;opacity:.35;animation:floatX 5s ease-in-out 1s infinite">◎</div>
+        <div style="position:absolute;bottom:18%;left:-5%;width:50px;height:50px;border:2px dashed rgba(46,196,182,.25);border-radius:50%;animation:spinSlow 14s linear infinite reverse"></div>
+        <div style="position:absolute;bottom:30%;right:5%;font-size:.9rem;opacity:.25;animation:floatY 7s ease-in-out 2s infinite">✧</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Hero background deco -->
+  <div style="position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden" aria-hidden="true">
+    <div style="position:absolute;top:10%;right:5%;width:400px;height:400px;background:radial-gradient(circle,rgba(255,107,74,.05),transparent 70%)"></div>
+    <div style="position:absolute;bottom:0;left:10%;width:300px;height:300px;background:radial-gradient(circle,rgba(46,196,182,.05),transparent 70%)"></div>
+    <svg style="position:absolute;top:20%;left:3%;opacity:.12" width="60" height="60" viewBox="0 0 60 60" fill="none">
+      <path d="M10 30 Q 30 10 50 30 Q 30 50 10 30Z" stroke="#FF6B4A" stroke-width="1.5" fill="none"/>
+    </svg>
+    <svg style="position:absolute;bottom:25%;right:8%;opacity:.1" width="80" height="40" viewBox="0 0 80 40" fill="none">
+      <path d="M0 20 Q 20 0 40 20 Q 60 40 80 20" stroke="#FF6B4A" stroke-width="1.5" fill="none" stroke-dasharray="4 3"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ═══════════════ MARQUEE ═══════════════ -->
+<div class="marquee-wrap">
+  <div class="marquee-inner" aria-hidden="true">
+    <span class="mi">社会工作</span><span class="mi mi-sep">✦</span>
+    <span class="mi">AI 产品运营</span><span class="mi mi-sep">✦</span>
+    <span class="mi">独立开发者</span><span class="mi mi-sep">✦</span>
+    <span class="mi">KOL 矩阵 201 人</span><span class="mi mi-sep">✦</span>
+    <span class="mi">量化研究</span><span class="mi mi-sep">✦</span>
+    <span class="mi">内容增长</span><span class="mi mi-sep">✦</span>
+    <span class="mi">北京大学</span><span class="mi mi-sep">✦</span>
+    <span class="mi">1P + AI = 1T</span><span class="mi mi-sep">✦</span>
+    <span class="mi">GTM 策略</span><span class="mi mi-sep">✦</span>
+    <span class="mi">Agent Native</span><span class="mi mi-sep">✦</span>
+    <span class="mi">社科思维 × AI 工具</span><span class="mi mi-sep">✦</span>
+    <!-- duplicate for loop -->
+    <span class="mi">社会工作</span><span class="mi mi-sep">✦</span>
+    <span class="mi">AI 产品运营</span><span class="mi mi-sep">✦</span>
+    <span class="mi">独立开发者</span><span class="mi mi-sep">✦</span>
+    <span class="mi">KOL 矩阵 201 人</span><span class="mi mi-sep">✦</span>
+    <span class="mi">量化研究</span><span class="mi mi-sep">✦</span>
+    <span class="mi">内容增长</span><span class="mi mi-sep">✦</span>
+    <span class="mi">北京大学</span><span class="mi mi-sep">✦</span>
+    <span class="mi">1P + AI = 1T</span><span class="mi mi-sep">✦</span>
+    <span class="mi">GTM 策略</span><span class="mi mi-sep">✦</span>
+    <span class="mi">Agent Native</span><span class="mi mi-sep">✦</span>
+    <span class="mi">社科思维 × AI 工具</span><span class="mi mi-sep">✦</span>
+  </div>
+</div>
+
+<!-- ═══════════════ ABOUT ═══════════════ -->
+<section id="about">
+  <div class="container">
+    <div class="sec-label ap">01 · About</div>
+    <h2 class="sec-title ap">关于<em>我</em></h2>
+    <div class="about-grid">
+      <div class="about-text">
+        <p class="ap">我是<strong>胡安静</strong>，北京大学社会工作专业在读硕士，本科毕业于杭州师范大学（<strong>综合成绩专业第一</strong>，<span class="hl">浙江省优秀毕业生</span>）。</p>
+        <p class="ap">我的探索横跨两条线：一是深耕<strong>学术研究</strong>，聚焦 AI 赋能社区治理、适老化改造与弱势群体支持，已有多篇论文发表或在投；二是热衷<strong>AI 产品实践</strong>，在 MarsWave AI 创业公司完成完整的产品运营历练，并独立开发了多款 AI 工具。</p>
+        <div class="about-quote ap">
+          我相信，<strong>社科的思维方式能让产品更懂人</strong>。<br>
+          技术是手段，人才是目的——这是我做所有事情的出发点。
+        </div>
+        <p class="ap" style="font-size:.85rem;color:var(--ink4)">工具栈：Python · R · Stata · SQL · Figma · Cursor · 各类 AI agent</p>
+      </div>
+      <div class="edu-stack">
+        <div class="edu-card card ap">
+          <div class="edu-school">北京大学</div>
+          <div class="edu-deg">社会工作 · 硕士</div>
+          <div class="edu-meta">2025.09 — 至今 &nbsp;·&nbsp; GPA 3.91 / 4.0</div>
+          <div class="edu-body">社工理论与实务（A+）、人口健康量化（A+）<br>北大选调生办公室政策研究室助理</div>
+          <div class="edu-chips">
+            <span class="chip chip-coral">挑战杯全国二等奖</span>
+            <span class="chip chip-gold">策论中国三等奖</span>
+          </div>
+        </div>
+        <div class="edu-card card mint-border ap">
+          <div class="edu-school">杭州师范大学</div>
+          <div class="edu-deg">社会工作 · 学士</div>
+          <div class="edu-meta">2021.09 — 2025.06 &nbsp;·&nbsp; 排名 1/24</div>
+          <div class="edu-body">浙江省优秀毕业生 &nbsp;·&nbsp; 省政府奖学金 ×3<br>Stata、R、Python、SQL、Figma</div>
+          <div class="edu-chips">
+            <span class="chip chip-mint">省案例大赛一等奖</span>
+            <span class="chip chip-ink">恒逸星光奖</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ CAPABILITIES ═══════════════ -->
+<section id="capabilities">
+  <!-- deco rings -->
+  <div class="cap-deco-ring" style="width:280px;height:280px;top:-60px;right:-80px"></div>
+  <div class="cap-deco-ring" style="width:180px;height:180px;bottom:20px;left:-40px"></div>
+
+  <div class="container">
+    <div class="sec-label ap">02 · Capabilities</div>
+    <h2 class="sec-title ap">能力<em>矩阵</em></h2>
+    <p class="cap-intro ap">1 Person + AI = 1 Team</p>
+    <div class="cap-grid">
+      <div class="cap-card ap">
+        <div class="cap-num">01</div>
+        <div class="cap-title">Research<br>&amp; Think</div>
+        <div class="cap-bar"></div>
+        <ul class="cap-list">
+          <li>质性调研 &amp; 量化分析</li>
+          <li>竞品分析 &amp; 策略推演</li>
+          <li>用户需求洞察</li>
+          <li>学术写作 &amp; 论文产出</li>
+          <li>数据统计（R / Stata / Python）</li>
+        </ul>
+      </div>
+      <div class="cap-card ap">
+        <div class="cap-num">02</div>
+        <div class="cap-title">Build<br>&amp; Create</div>
+        <div class="cap-bar" style="background:var(--mint)"></div>
+        <ul class="cap-list">
+          <li>独立 AI 产品开发</li>
+          <li>产品原型 &amp; PRD 文档</li>
+          <li>GTM 增长策略设计</li>
+          <li>视觉内容 &amp; 品牌物料</li>
+          <li>自动化工具搭建（Cursor）</li>
+        </ul>
+      </div>
+      <div class="cap-card ap">
+        <div class="cap-num">03</div>
+        <div class="cap-title">Operate<br>&amp; Grow</div>
+        <div class="cap-bar" style="background:var(--gold)"></div>
+        <ul class="cap-list">
+          <li>KOL 建联 &amp; 海外账号运营</li>
+          <li>增长漏斗 &amp; 数据埋点</li>
+          <li>新媒体矩阵内容运营</li>
+          <li>SOP 搭建 &amp; 项目管理</li>
+          <li>社区冷启动 &amp; 裂变设计</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ EXPERIENCE ═══════════════ -->
+<section id="experience">
+  <div class="container">
+    <div class="sec-label ap">03 · Experience</div>
+    <h2 class="sec-title ap">实习<em>经历</em></h2>
+    <div class="tl-wrap" id="timeline">
+      <div class="tl-track"></div>
+
+      <!-- MarsWave — FEATURED -->
+      <div class="tl-item featured ap">
+        <div class="tl-dot"></div>
+        <div class="tl-card card">
+          <div class="tl-header">
+            <div>
+              <div class="tl-company">MarsWave &nbsp;·&nbsp; AI 创业公司</div>
+              <div class="tl-role">AI 产品运营实习生</div>
+            </div>
+            <div class="tl-period">2026.02 — 2026.05</div>
+          </div>
+          <div class="tl-body">
+            <div class="tl-sub">Cola · AI OS with Soul —— 海外 Twitter 从 0 到 1</div>
+            <ul>
+              <li>Cola 是一款定位「AI OS with soul」的产品，负责其海外 Twitter 账号从 0 到 1 的冷启动运营，制定覆盖 2K→10K→5万 三阶段增长路线图</li>
+              <li>构建 KOL 矩阵共 <strong style="color:var(--coral)">201 人</strong>（Tier1 16 人），按 P0–P3 四级分层；协调 Launch Day 节奏，<strong style="color:var(--coral)">八条推文</strong>同步发布，平台反应「感觉不一样」「有灵魂」</li>
+              <li>独立设计品牌专属词汇体系：<span class="chip chip-coral" style="font-size:.68rem">Spark</span> <span class="chip chip-mint" style="font-size:.68rem">Echo</span> <span class="chip chip-gold" style="font-size:.68rem">Drift</span> <span class="chip chip-ink" style="font-size:.68rem">Bloom</span> <span class="chip chip-ink" style="font-size:.68rem">Nudge</span>，以「非员工自发使用品牌词」为北极星指标</li>
+              <li>建立每日内容节奏：7 类主题轮播（#ColaSpark、#ColaDrift、#ColaEcho 等）+ Meme 玩梗策略，单日产出 20+ 条高质量英文互动内容</li>
+            </ul>
+            <div class="tl-sub">IG · One Sentence Challenge</div>
+            <ul>
+              <li>设计 Instagram 账号「One Sentence Challenge」冷启动内容体系，构建互动 + 传播双轮驱动的内容增长路径</li>
+              <li>撰写账号运营 SOP，涵盖内容节奏、评论维护、KOL 邀约、用户 UGC 激励机制</li>
+            </ul>
+            <div class="tl-sub">ListenHub · AI 音频产品增长</div>
+            <ul>
+              <li>拆解分销机制五大问题维度，设计三级分销模型，输出 5 个带埋点的 HTML 交互原型</li>
+              <li>研究饥饿营销策略，提出双路径方案：传统四阶段 &amp; 游戏化五层（隐藏线索→嵌入密钥→身份标签→密钥继承→试炼场）</li>
+              <li>通过 Cursor 搭建自动化内容发布工作流，日均内容产出效率提升 300%</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 燕园街道 -->
+      <div class="tl-item ap">
+        <div class="tl-dot"></div>
+        <div class="tl-card card">
+          <div class="tl-header">
+            <div>
+              <div class="tl-company">燕园街道社区服务中心（北京大学附近）</div>
+              <div class="tl-role">社区工作实习生 · 小组长</div>
+            </div>
+            <div class="tl-period">2026.03 — 2026.05</div>
+          </div>
+          <div class="tl-body"><ul>
+            <li>北大社工专业实习，担任小组长，负责社区居民服务项目推进与协调</li>
+            <li>统筹小组成员分工，组织实地走访与需求调研，输出项目报告</li>
+            <li>将社会工作理论与实务结合，探索社区治理中的 AI 赋能路径</li>
+          </ul></div>
+        </div>
+      </div>
+
+      <!-- 杭州市余杭区助联体 -->
+      <div class="tl-item ap">
+        <div class="tl-dot"></div>
+        <div class="tl-card card">
+          <div class="tl-header">
+            <div>
+              <div class="tl-company">杭州市余杭区助联体</div>
+              <div class="tl-role">社会事业部实习生</div>
+            </div>
+            <div class="tl-period">2024.06 — 2024.10</div>
+          </div>
+          <div class="tl-body"><ul>
+            <li>独立运营机构抖音、微信公众号等新媒体平台，负责内容编辑、发布与互动维护</li>
+            <li>撰写多篇活动新闻稿，获「浙江民政」「余杭区民政」等权威公众号推送</li>
+            <li>负责活动策划、采购询价文件撰写，前往多个区域开展实地服务</li>
+          </ul></div>
+        </div>
+      </div>
+
+      <!-- 腾讯新闻 -->
+      <div class="tl-item dim ap">
+        <div class="tl-dot"></div>
+        <div class="tl-card card">
+          <div class="tl-header">
+            <div>
+              <div class="tl-company">腾讯新闻</div>
+              <div class="tl-role">线上运维实习生</div>
+            </div>
+            <div class="tl-period">2021.09 — 2021.12</div>
+          </div>
+          <div class="tl-body"><ul>
+            <li>负责平台日常运营维护及评论区内容管理，深度参与用户互动逻辑与内容生态优化</li>
+            <li>系统收集归纳用户反馈与高频问题，为内容策略优化提供数据支撑</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ PROJECTS ═══════════════ -->
+<section id="projects">
+  <div class="container">
+    <div class="sec-label ap">04 · Projects</div>
+    <h2 class="sec-title ap">独立<em>项目</em></h2>
+    <div class="projects-grid">
+      <div class="pj card ap">
+        <div class="pj-icon">🎯</div>
+        <div class="pj-name">JobHunter</div>
+        <div class="pj-sub">AI 求职辅导平台 · 独立开发 · 2026</div>
+        <div class="pj-desc">8 个功能模块：技能卡片生成、简历-JD 匹配评分、AI 模拟面试、Kanban 求职追踪、个人知识库。AES-256 加密存储，支持本地 AI 推理（Ollama），隐私优先。</div>
+        <div class="pj-tags">
+          <span class="tag">FastAPI</span><span class="tag">Next.js 14</span>
+          <span class="tag">PostgreSQL</span><span class="tag">Ollama</span><span class="tag">AES-256</span>
+        </div>
+      </div>
+      <div class="pj card ap">
+        <div class="pj-icon">📊</div>
+        <div class="pj-name">AcademicBot</div>
+        <div class="pj-sub">本地学术数据分析工具包 · 独立开发 · 2026</div>
+        <div class="pj-desc">零 API 依赖，集成 20+ 种统计方法（描述统计、t 检验、ANOVA、相关分析、SEM 中介、OLS 回归），交互式 Web 界面，输出全中文学术解读。原始数据不出本机。</div>
+        <div class="pj-tags">
+          <span class="tag">Python</span><span class="tag">Streamlit</span>
+          <span class="tag">SEM / OLS</span><span class="tag">Local-First</span>
+        </div>
+      </div>
+      <div class="pj card ap">
+        <div class="pj-icon">🛡️</div>
+        <div class="pj-name">InsureBot</div>
+        <div class="pj-sub">智能家庭保险解读工具 · 2026</div>
+        <div class="pj-desc">根据家庭经济状况、风险偏好和生命周期阶段，AI 自动评估保险产品匹配度，生成个性化配置建议。论文实验原型，支撑双轨决策研究。</div>
+        <div class="pj-tags">
+          <span class="tag">AI</span><span class="tag">个性化推荐</span><span class="tag">风险评估</span><span class="tag">实验研究</span>
+        </div>
+      </div>
+      <div class="pj card ap">
+        <div class="pj-icon">🧠</div>
+        <div class="pj-name">MindDrift</div>
+        <div class="pj-sub">ADHD 随笔备忘录 · 产品设计 · 2025</div>
+        <div class="pj-desc">针对 ADHD 用户设计的碎片化思维捕捉工具。iOS 快捷指令一键输入，AI 自动分类 + 周期性智能总结，大幅降低思维管理门槛。</div>
+        <div class="pj-tags">
+          <span class="tag">Figma</span><span class="tag">iOS Shortcuts</span><span class="tag">AI 分类</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ RESEARCH ═══════════════ -->
+<section id="research">
+  <div class="container">
+    <div class="sec-label ap">05 · Research</div>
+    <h2 class="sec-title ap">学术<em>研究</em></h2>
+    <div class="papers">
+      <div class="paper-row card ap">
+        <div class="p-num">01</div>
+        <div>
+          <div class="p-title">《国际化社区治理共同体建设中居民参与困境与路径探索》——基于多元文化分析视角</div>
+          <div class="p-status pub">一作 · 已发表</div>
+        </div>
+      </div>
+      <div class="paper-row card ap">
+        <div class="p-num">02</div>
+        <div>
+          <div class="p-title">《非对称支配、组织脱耦与"合而不作"：基层微更新中协同惰性的生成逻辑与实案解构》</div>
+          <div class="p-status">投稿中</div>
+        </div>
+      </div>
+      <div class="paper-row card ap">
+        <div class="p-num">03</div>
+        <div>
+          <div class="p-title">《双主体育人视域下社会工作劳动本位体验行动研究范式重构》</div>
+          <div class="p-status">投稿中</div>
+        </div>
+      </div>
+      <div class="paper-row card ap">
+        <div class="p-num">04</div>
+        <div>
+          <div class="p-title">《结构赋能：心智障碍者就业融合的转型路径研究》</div>
+          <div class="p-status">投稿中</div>
+        </div>
+      </div>
+      <div class="paper-row card ap">
+        <div class="p-num">05</div>
+        <div>
+          <div class="p-title">《从"技术断连"到"协同赋能"：社会工作介入老年数字鸿沟的行动研究》</div>
+          <div class="p-status">会议论文</div>
+        </div>
+      </div>
+      <div class="paper-row card ap">
+        <div class="p-num">06</div>
+        <div>
+          <div class="p-title">《AI 交互式调查中态度与行为的双轨分离——基于 InsureBot 保险决策实验》</div>
+          <div class="p-status progress">一作 · 投稿中</div>
+        </div>
+      </div>
+      <div class="paper-row card ap">
+        <div class="p-num">07</div>
+        <div>
+          <div class="p-title">《无人机赋能乡村社区治理：技术嵌入与社会适应的双轨逻辑》</div>
+          <div class="p-status progress">撰写中</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ CONTACT ═══════════════ -->
+<section id="contact">
+  <!-- deco -->
+  <div class="contact-deco-dot" style="width:200px;height:200px;top:-60px;right:-60px;opacity:.04;animation:bobble 8s ease-in-out infinite"></div>
+  <div class="contact-deco-dot" style="width:120px;height:120px;bottom:40px;left:5%;background:var(--mint);opacity:.04;animation:bobble 6s ease-in-out 2s infinite"></div>
+  <div style="position:absolute;top:12%;right:8%;font-size:3rem;opacity:.04;color:var(--cream);animation:spinSlow 30s linear infinite">✦</div>
+
+  <div class="container">
+    <div class="sec-label ap">06 · Contact</div>
+    <div class="contact-grid">
+      <div class="ap">
+        <h2 class="contact-left-big">一起<em>聊聊</em>？</h2>
+        <p class="contact-sub">
+          无论是 AI 产品实践、社会研究方向，<br>
+          还是有趣的合作想法，都欢迎联系我。<br>
+          我会认真看每一封邮件。
+        </p>
+        <p class="contact-motto">
+          社科视角 × AI 工具<br>
+          我想做对人真正有意义的东西
+        </p>
+      </div>
+      <div class="contact-links ap">
+        <a href="mailto:17354729343@163.com" class="c-link">
+          <div class="c-icon">✉️</div>
+          <div>
+            <div class="c-name">17354729343@163.com</div>
+            <div class="c-meta">Email</div>
+          </div>
+        </a>
+        <a href="https://github.com/QuietAnjing" class="c-link" target="_blank" rel="noopener">
+          <div class="c-icon">⌨️</div>
+          <div>
+            <div class="c-name">github.com/QuietAnjing</div>
+            <div class="c-meta">GitHub</div>
+          </div>
+        </a>
+        <a href="https://twitter.com/MarsWaveAI" class="c-link" target="_blank" rel="noopener">
+          <div class="c-icon">𝕏</div>
+          <div>
+            <div class="c-name">twitter.com/MarsWaveAI</div>
+            <div class="c-meta">Cola 官方 Twitter</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © 2026 胡安静 &nbsp;·&nbsp; Built with care <span class="heart">♥</span> and a little bit of soul
+</footer>
+
+<script>
+  /* ── scroll progress bar ── */
+  const prog = document.getElementById('prog');
+  window.addEventListener('scroll', () => {
+    const sy  = window.scrollY;
+    const max = document.body.scrollHeight - window.innerHeight;
+    prog.style.width = Math.min(sy / max * 100, 100) + '%';
+  }, { passive: true });
+
+  /* ── scroll reveal ── */
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const el  = e.target;
+      // group stagger for grid children
+      const grp = el.closest(
+        '.edu-stack, .projects-grid, .cap-grid, .papers, .tl-wrap, .about-grid, .contact-grid, .about-text'
+      );
+      if (grp) {
+        Array.from(grp.querySelectorAll('.ap:not(.in)')).forEach((s, i) =>
+          setTimeout(() => s.classList.add('in'), i * 65)
+        );
+      } else {
+        el.classList.add('in');
+      }
+      io.unobserve(el);
+    });
+  }, { threshold: 0.06, rootMargin: '0px 0px -20px 0px' });
+
+  document.querySelectorAll('.ap').forEach(el => io.observe(el));
+
+  /* ── timeline draw ── */
+  const ioTL = new IntersectionObserver(entries =>
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('drawn'); ioTL.unobserve(e.target); }
+    }), { threshold: 0.06 }
+  );
+  const tl = document.getElementById('timeline');
+  if (tl) ioTL.observe(tl);
+
+  /* ── hover tilt on cards ── */
+  document.querySelectorAll('.pj.card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const rect = card.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width  - .5;
+      const y = (e.clientY - rect.top)  / rect.height - .5;
+      card.style.transform = `perspective(800px) rotateY(${x*6}deg) rotateX(${-y*4}deg) translateY(-6px)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+    });
+  });
+</script>
+</body>
+</html>
